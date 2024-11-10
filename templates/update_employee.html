@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Employee</title>
+</head>
+<body>
+    <h1>Edit Employee</h1>
+    <form action="{{ url_for('update_employee', id=employee.id) }}" method="POST">
+        <label for="employee_id">Employee ID:</label>
+        <input type="text" id="employee_id" name="employee_id" value="{{ employee.employee_id }}" readonly><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{{ employee.name }}" required><br>
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" value="{{ employee.address }}"><br>
+
+        <label for="position_id">Position:</label>
+        <select id="position_id" name="position_id" required>
+            {% for position in positions %}
+            <option value="{{ position.id }}" {% if position.id == employee.position_id %}selected{% endif %}>{{ position.name }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="schedule_id">Schedule:</label>
+        <select id="schedule_id" name="schedule_id" required>
+            {% for schedule in schedules %}
+            <option value="{{ schedule.id }}" {% if schedule.id == employee.schedule_id %}selected{% endif %}>{{ schedule.schedule_name }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="salary_id">Salary:</label>
+        <select id="salary_id" name="salary_id">
+            {% for salary in salaries %}
+            <option value="{{ salary.id }}" {% if salary.id == employee.salary_id %}selected{% endif %}>{{ salary.hourly_rate }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="site_id">Site:</label>
+        <select id="site_id" name="site_id">
+            {% for site in sites %}
+            <option value="{{ site.id }}" {% if site.id == employee.site_id %}selected{% endif %}>{{ site.site_name }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="contact_number">Contact Number:</label>
+        <input type="text" id="contact_number" name="contact_number" value="{{ employee.contact_number }}"><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{ employee.email }}"><br>
+
+        <button type="submit">Update Employee</button>
+    </form>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>

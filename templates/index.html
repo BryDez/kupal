@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Clock In/Out</title>
+    <style>
+        /* General body styling */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+
+        /* Main container styling */
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        /* Header styling */
+        h1 {
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Form label and input styling */
+        label {
+            display: block;
+            margin: 1rem 0 0.5rem;
+            color: #555;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        /* Button styling */
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Response message styling */
+        #result {
+            margin-top: 1rem;
+            color: #28a745;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Employee Clock In/Out</h1>
+        <form id="clockForm">
+            <label for="employeeId">Employee ID:</label>
+            <input type="text" id="employeeId" name="employeeId" required>
+            
+            <label for="action">Action:</label>
+            <select id="action" name="action" required>
+                <option value="in">Clock In</option>
+                <option value="out">Clock Out</option>
+            </select>
+            
+            <button type="submit">Submit</button>
+        </form>
+
+        <button id="viewReceiptButton">View Receipt</button>
+        <button onclick="window.location.href='/dashboard'">Admin Dashboard</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById("clockForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const employeeId = document.getElementById("employeeId").value;
+            const action = document.getElementById("action").value;
+            
+            // Send data to server
+            const response = await fetch("/clock", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ employeeId, action })
+            });
+
+            const result = await response.json();
+            document.getElementById("result").innerText = result.message;
+        });
+
+        // Navigate to the receipt page when "View Receipt" button is clicked
+        document.getElementById("viewReceiptButton").addEventListener("click", function() {
+            const employeeId = document.getElementById("employeeId").value;
+            if (employeeId) {
+                // Open the receipt page in a new tab
+                window.open(`/receipt/${employeeId}`, "_blank");
+            } else {
+                alert("Please enter an Employee ID to view the receipt.");
+            }
+        });
+    </script>
+</body>
+</html>

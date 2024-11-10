@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    
+    <!-- Link to go back to index page -->
+    <a href="{{ url_for('home') }}">Back to Home</a>
+    
+    <h2>Employees</h2>
+    <a href="{{ url_for('add_employee') }}">Add New Employee</a>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Schedule</th>
+            <th>Salary</th>
+            <th>Actions</th>
+        </tr>
+        {% for employee in employees %}
+        <tr>
+            <td>{{ employee.id }}</td>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.position_id }}</td>
+            <td>{{ employee.schedule_id }}</td>
+            <td>{{ employee.salary_id }}</td>
+            <td>
+                <a href="{{ url_for('update_employee', id=employee.id) }}">Edit</a> |
+                <a href="{{ url_for('delete_employee', id=employee.id) }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

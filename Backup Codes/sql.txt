@@ -1,0 +1,90 @@
+mysql -u root -p
+
+CREATE DATABASE employee_management;
+USE employee_management;
+
+CREATE TABLE position_types (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    type_name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE positions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    position_type_id INT NOT NULL,
+    hourly_rate FLOAT NOT NULL,
+    FOREIGN KEY (position_type_id) REFERENCES position_types(id)
+);
+
+CREATE TABLE sites (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    site_name VARCHAR(100) NOT NULL,
+    city VARCHAR(100),
+    zip_code VARCHAR(10)
+);
+
+CREATE TABLE schedules (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    schedule_name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE salaries (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    hourly_rate FLOAT NOT NULL
+);
+
+CREATE TABLE employees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    employee_id VARCHAR(50) NOT NULL UNIQUE,
+    name VARCHAR(100) NOT NULL,
+    address VARCHAR(255),
+    position_id INT NOT NULL,
+    schedule_id INT NOT NULL,
+    salary_id INT,
+    site_id INT,
+    contact_number VARCHAR(15),
+    email VARCHAR(100),
+    clock_in DATETIME,
+    clock_out DATETIME,
+    hours_worked FLOAT,
+    FOREIGN KEY (position_id) REFERENCES positions(id),
+    FOREIGN KEY (schedule_id) REFERENCES schedules(id),
+    FOREIGN KEY (salary_id) REFERENCES salaries(id),
+    FOREIGN KEY (site_id) REFERENCES sites(id)
+);
+
+USE employee_management;
+
+-- Insert sample data into position_types
+INSERT INTO position_types (type_name) VALUES 
+('Full Time'),
+('Part Time');
+
+-- Insert sample data into positions
+INSERT INTO positions (name, position_type_id, hourly_rate) VALUES 
+('Software Engineer', 1, 40.00),
+('Data Analyst', 1, 35.00),
+('Intern', 2, 15.00);
+
+-- Insert sample data into sites
+INSERT INTO sites (site_name, city, zip_code) VALUES 
+('Head Office', 'New York', '10001'),
+('Branch Office', 'Los Angeles', '90001');
+
+-- Insert sample data into schedules
+INSERT INTO schedules (schedule_name) VALUES 
+('Morning'),
+('Afternoon'),
+('Night');
+
+-- Insert sample data into salaries
+INSERT INTO salaries (hourly_rate) VALUES 
+(40.00),
+(35.00),
+(15.00);
+
+-- Insert sample data into employees
+INSERT INTO employees (employee_id, name, address, position_id, schedule_id, salary_id, site_id, contact_number, email) VALUES 
+('E001', 'Alice Smith', '123 Main St, New York, NY', 1, 1, 1, 1, '123-456-7890', 'alice@example.com'),
+('E002', 'Bob Johnson', '456 Elm St, Los Angeles, CA', 2, 2, 2, 2, '987-654-3210', 'bob@example.com'),
+('E003', 'Charlie Brown', '789 Maple St, Chicago, IL', 3, 3, 3, 1, '555-555-5555', 'charlie@example.com');
